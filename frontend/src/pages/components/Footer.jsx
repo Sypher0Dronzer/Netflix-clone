@@ -16,7 +16,7 @@ const Footer = () => {
                 <p className='text-balance text-center text-sm leading-loose text-muted-foreground md:text-left'>
 					Link to {" "}
 					<a
-						href='https://github.com/burakorkmez'
+						href='https://github.com/Sypher0Dronzer/Netflix-clone'
 						target='_blank'
 						className='font-medium hover:underline underline-offset-4 hover:text-red-500'
 					>

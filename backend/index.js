@@ -32,7 +32,7 @@ app.use(
     store: mongoStore, // Use MongoDB store
     cookie: {
       secure: false, // Set to `true` if using HTTPS
-      httpOnly: true,
+      httpOnly: false,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
     },
   })
