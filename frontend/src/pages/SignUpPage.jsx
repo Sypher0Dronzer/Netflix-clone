@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { useAuthStore } from "./store/authUser";
+import { useAuthStore } from "../store/authUser";
 
 const SignUpPage = () => {
   const [searchParams] = useSearchParams();

@@ -28,7 +28,7 @@ const AuthScreen = () => {
 
             <form className='flex flex-col md:flex-row gap-4 w-1/2' onSubmit={handleFormSubmit}>
                 <input
-                    type='email'
+                    type='email' required
                     placeholder='Email address'
                     className='p-2 rounded flex-1 bg-black/80 border border-gray-700'
                     value={email}
