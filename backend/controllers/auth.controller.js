@@ -139,7 +139,6 @@ export async function logout(req, res) {
 
 export async function authCheck(req, res) {
   try {
-    console.log('this is from authcheck '+ req.isAuthenticated());
     
     return res.status(200).json({ success: true, user: req.user });
   } catch (err) {

@@ -76,6 +76,21 @@ async function getMoviesByCategory(req, res) {
       }
   }
   
+  
+
+  async function getMovieCredits(req, res) {
+  const { id } = req.params;
+
+    try {
+      const data = await fetchFromTMDB(
+        `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`
+      );
+      
+      res.json({ success: true, credits: data});
+    } catch (err) {
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  }
 
 
 export {
@@ -83,5 +98,6 @@ export {
   getMovieTrailers,
   getMovieDetails,
   getSimilarMovies,
-  getMoviesByCategory
+  getMoviesByCategory,
+  getMovieCredits
 };

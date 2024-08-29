@@ -12,7 +12,6 @@ import WatchPage from "./pages/WatchPage";
 export default function App() {
   const {user,isCheckingAuth,authCheck}= useAuthStore()
 
-  console.log('Auth user is :',user);
   useEffect(()=>{
     authCheck()
   },[])
