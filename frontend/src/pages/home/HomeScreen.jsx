@@ -8,12 +8,29 @@ import {
 import { Info, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContentStore } from "../../store/content";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MovieSlider from "../components/MovieSlider";
 const HomeScreen = () => {
   const { trendingContent } = useGetTrendingContent();
   const { contentType } = useContentStore();
   const [imgLoading, setImgLoading] = useState(true);
+  const [imgSrc, setImgSrc] = useState('');
+
+  //this is for mobile screens to have poster rather than backdrop image
+  useEffect(() => {
+    const updateImageSrc = () => {
+      if (window.innerWidth < 640) { // Tailwind's 'sm' breakpoint is 640px
+        setImgSrc(ORIGINAL_IMG_BASE_URL + trendingContent?.poster_path);
+      } else {
+        setImgSrc(ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path);
+      }
+    };
+
+    updateImageSrc(); // Set the initial image
+    window.addEventListener('resize', updateImageSrc); // Update image on window resize
+
+    return () => window.removeEventListener('resize', updateImageSrc); // Cleanup listener on unmount
+  }, [trendingContent]);
 
   if (!trendingContent)
     return (
@@ -25,7 +42,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      <div className="relative h-screen text-white ">
+      <div className="relative sm:h-screen h-[80vh] text-white ">
         <Navbar />
 
         {/* COOL OPTIMIZATION HACK FOR IMAGES */}
@@ -33,14 +50,14 @@ const HomeScreen = () => {
           <div className="absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center shimmer -z-10" />
         )}
 
-        <img
-          src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path}
-          alt="Hero img"
-          className="absolute top-0 left-0 w-full h-full object-cover -z-50"
-          onLoad={() => {
-            setImgLoading(false);
-          }}
-        />
+<img
+      src={imgSrc}
+      alt="Hero img"
+      className="absolute top-0 left-0 w-full h-full object-cover -z-50"
+      onLoad={() => {
+        setImgLoading(false);
+      }}
+    />
 
         <div
           className="absolute top-0 left-0 w-full h-full bg-black/50 -z-50"
@@ -54,16 +71,16 @@ const HomeScreen = () => {
           />
 
           <div className="max-w-2xl">
-            <h1 className="mt-4 text-6xl font-extrabold text-balance">
+            <h1 className="mt-4 sm:text-6xl text-4xl font-extrabold text-balance">
               {trendingContent?.title || trendingContent?.name}
             </h1>
-            <p className="mt-2 text-lg">
+            <p className="mt-2 sm:text-lg text-md">
               {trendingContent?.release_date?.split("-")[0] ||
                 trendingContent?.first_air_date.split("-")[0]}{" "}
               | {trendingContent?.adult ? "18+" : "PG-13"}
             </p>
 
-            <p className="mt-4 text-lg">
+            <p className="mt-4 sm:text-lg text-md">
               {trendingContent?.overview.length > 200
                 ? trendingContent?.overview.slice(0, 200) + "..."
                 : trendingContent?.overview}

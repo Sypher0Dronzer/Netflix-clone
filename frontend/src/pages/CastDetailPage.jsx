@@ -14,6 +14,10 @@ const CastDetailPage = () => {
   const [showArrows2, setShowArrows2] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpand = () => setIsExpanded(!isExpanded);
+
   const sliderRef = useRef();
   const sliderRef2 = useRef();
 
@@ -22,7 +26,6 @@ const CastDetailPage = () => {
     const getCastDetails = async (id) => {
       try {
         const res = await axios.get(`/api/v1/cast/${id}`);
-        console.log(res.data.tvs.cast);
         setTvsCasted(res.data.tvs.cast);
         setMoviesCasted(res.data.movies.cast);
         setDetails(res.data.castDetails);
@@ -66,7 +69,11 @@ const CastDetailPage = () => {
 
   if (isLoading)
     return (
-      <div className="absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center shimmer -z-10" />
+      <div className='h-screen'>
+				<div className='flex justify-center items-center bg-black h-full'>
+					<Loader className='animate-spin text-red-600 size-10' />
+				</div>
+			</div>
     );
 
   if (!details) {
@@ -86,10 +93,10 @@ const CastDetailPage = () => {
 
   return (
     <div className="bg-black  min-h-screen text-white">
-      <div className="mx-auto max-w-6xl px-4 py-8 h-full">
         <Navbar />
-        <div className="flex mt-4 lg:gap-x-12">
-          <div className="w-72 flex-none flex  h-[450px]  ">
+      <div className="mx-auto max-w-6xl px-4  h-full">
+        <div className="flex flex-col sm:flex-row mt-4 gap-x-6 md:gap-x-12 ">
+          <div className="sm:w-72 w-52 flex-none mx-auto md:mx-0">
             <img
               src={SMALL_IMG_BASE_URL + details?.profile_path}
               alt="Profile pic"
@@ -97,16 +104,30 @@ const CastDetailPage = () => {
             />
           </div>
           <div className="flex flex-col justify-center">
-            <h1 className="text-4xl font-bold">{details.name}</h1>
+            <h1 className="md:text-4xl text-2xl font-bold mt-4 md:mt-0">{details.name}</h1>
 
-            <h3 className="font-semibold text-xl mt-4">Place of birth</h3>
-            <p className="mt-2"> {details.place_of_birth}</p>
+            <h3 className="font-semibold md:text-xl text-md mt-4">Place of birth</h3>
+            <p className="md:mt-2 text-sm md:text-md"> {details.place_of_birth}</p>
 
-            <h3 className="font-semibold text-xl mt-4">Birthday</h3>
-            <p className="mt-2">{formatDateOfBirth(details.birthday)}</p>
+            <h3 className="font-semibold md:text-xl text-md mt-4">Birthday</h3>
+            <p className="md:mt-2 text-sm md:text-md">{formatDateOfBirth(details.birthday)}</p>
 
-            <h3 className="font-semibold text-xl mt-4">Biography</h3>
-            <p className="mt-2">{details?.biography}</p>
+            <h3 className="font-semibold md:text-xl text-md mt-4">Biography</h3>
+            <p className="md:mt-2 text-sm md:text-lg leading-loose">
+        {isExpanded
+          ? details?.biography
+          : details?.biography.length > 460
+          ? details?.biography.slice(0, 460) + "..."
+          : details?.biography}
+      </p>
+      {details?.biography.length > 460 && (
+        <button
+          onClick={toggleExpand}
+          className="mt-2 text-red-700 hover:underline"
+        >
+          {isExpanded ? "Read Less" : "Read More"}
+        </button>
+      )}
           </div>
         </div>
 
@@ -127,13 +148,11 @@ const CastDetailPage = () => {
               return (
                 <Link
                   to={`/watch/movie/${item.id}`}
-                  className="min-w-[200px] relative group"
+                  className="sm:w-48 w-32 drop-shadow-[2px_2px_2px_rgba(255,255,255,0.4)] flex-none relative group"
                   key={item.id + item.character}
                 >
                   <div className="rounded-lg overflow-hidden">
-                      {/* <div className="flex justify-center items-center bg-black h-full">
-                        <Loader className="animate-spin text-red-600 size-10" />
-                      </div> */}
+                      
                     <img
                       src={SMALL_IMG_BASE_URL + item.poster_path}
                       alt="Movie image"
@@ -148,7 +167,7 @@ const CastDetailPage = () => {
           {showArrows && (
             <>
               <button
-                className="absolute top-32  left-2 flex items-center justify-center
+                className="absolute top-32  left-2 hidden sm:flex items-center justify-center 
             size-12 rounded-full bg-red-700 bg-opacity-80 hover:bg-opacity-95 text-white z-10
             "
                 onClick={scrollLeft}
@@ -157,7 +176,7 @@ const CastDetailPage = () => {
               </button>
 
               <button
-                className="absolute top-32  right-2 flex items-center justify-center
+                className="absolute top-32  right-2 hidden sm:flex items-center justify-center
             size-12 rounded-full bg-red-700 bg-opacity-60 hover:bg-opacity-95 text-white z-10
             "
                 onClick={scrollRight}
@@ -169,9 +188,9 @@ const CastDetailPage = () => {
         </div>
 
         {/* Tv Casted */}
-        <h2 className="mt-8 text-2xl font-bold">TV Series Casted</h2>
+        <h2 className="sm:mt-6 text-2xl font-bold">TV Series Casted</h2>
         <div
-          className="relative mt-4 "
+          className="relative mt-4 pb-8 "
           onMouseEnter={() => setShowArrows2(true)}
           onMouseLeave={() => setShowArrows2(false)}
         >
@@ -184,7 +203,7 @@ const CastDetailPage = () => {
               return (
                 <Link
                   to={`/watch/tv/${item.id}`}
-                  className="min-w-[200px] relative group"
+                  className="sm:w-48 w-32 flex-none drop-shadow-[2px_2px_2px_rgba(255,255,255,0.4)] relative group"
                   key={item.id + item.character}
                 >
                   <div className="rounded-lg overflow-hidden">
@@ -202,7 +221,7 @@ const CastDetailPage = () => {
           {showArrows2 && (
             <>
               <button
-                className="absolute top-32  left-2 flex items-center justify-center
+                className="absolute top-32  left-2 hidden sm:flex items-center justify-center 
             size-12 rounded-full bg-red-700 bg-opacity-80 hover:bg-opacity-95 text-white z-10
             "
                 onClick={scrollLeft2}
@@ -211,7 +230,7 @@ const CastDetailPage = () => {
               </button>
 
               <button
-                className="absolute top-32  right-2 flex items-center justify-center
+                className="absolute top-32  right-2 hidden sm:flex items-center justify-center
             size-12 rounded-full bg-red-700 bg-opacity-60 hover:bg-opacity-95 text-white z-10
             "
                 onClick={scrollRight2}

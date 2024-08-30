@@ -9,6 +9,9 @@ import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import WatchPage from "./pages/WatchPage";
 import CastDetailPage from "./pages/CastDetailPage";
+import SearchPage from "./pages/SearchPage";
+import SearchHistoryPage from "./pages/SearchHistoryPage";
+import NotFoundPage from "./pages/404";
 
 export default function App() {
   const {user,isCheckingAuth,authCheck}= useAuthStore()
@@ -31,8 +34,11 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="/login" element={!user? <LoginPage /> : <Navigate to={'/'}/>} />
           <Route path="/signup" element={!user? <SignUpPage /> : <Navigate to={'/'}/>} />
+          <Route path="/search" element={user? <SearchPage /> : <Navigate to={'/login'}/>} />
+          <Route path="/history" element={user? <SearchHistoryPage /> : <Navigate to={'/login'}/>} />
           <Route path="/watch/:type/:id" element={user? <WatchPage /> : <Navigate to={'/login'}/>} />
           <Route path="/cast/:id" element={user? <CastDetailPage /> : <Navigate to={'/login'}/>} />
+          <Route path='/*' element={<NotFoundPage />} />
       </Routes>
       <Toaster/>
       <Footer/>

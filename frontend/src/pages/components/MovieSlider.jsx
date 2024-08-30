@@ -9,6 +9,10 @@ const MovieSlider = ({ category }) => {
   const { contentType } = useContentStore();
   const [content, setContent] = useState([]);
   const [showArrows, setShowArrows] = useState(false);
+  const [imgSrc, setImgSrc] = useState('');
+
+  //this is for mobile screens to have poster rather than backdrop image
+ 
 
   const sliderRef = useRef(null);
 
@@ -25,6 +29,22 @@ const MovieSlider = ({ category }) => {
 
     getContent();
   }, [contentType, category]);
+
+// to change between poster and backdrop image for different screens
+  useEffect(() => {
+    const updateImageSrc = () => {
+      if (window.innerWidth < 640) { // Tailwind's 'sm' breakpoint is 640px
+        setImgSrc('poster_path');
+      } else {
+        setImgSrc('backdrop_path');
+      }
+    };
+
+    updateImageSrc(); // Set the initial image
+    window.addEventListener('resize', updateImageSrc); // Update image on window resize
+
+    return () => window.removeEventListener('resize', updateImageSrc); // Cleanup listener on unmount
+  }, [content]);
 
   const scrollLeft = () => {
     if (sliderRef.current) {
@@ -58,17 +78,17 @@ const MovieSlider = ({ category }) => {
         {content.map((item) => (
           <Link
             to={`/watch/${contentType}/${item.id}`}
-            className="min-w-[250px] relative group"
+            className="sm:min-w-[250px] min-w-32 drop-shadow-[2px_2px_2px_rgba(255,255,255,0.4)] relative group"
             key={item.id}
           >
             <div className="rounded-lg overflow-hidden">
               <img
-                src={SMALL_IMG_BASE_URL + item.backdrop_path}
+                src={SMALL_IMG_BASE_URL + item[imgSrc]}
                 alt="Movie image"
                 className="transition-transform duration-300 ease-in-out group-hover:scale-125"
               />
             </div>
-            <p className="mt-2 text-center">{item.title || item.name}</p>
+            <p className="mt-2 sm:text-lg text-md text-center">{item.title || item.name}</p>
           </Link>
         ))}
       </div>
