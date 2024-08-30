@@ -81,13 +81,13 @@ async function getTvsByCategory(req, res) {
   
       try {
         const data = await fetchFromTMDB(
-          `https://api.themoviedb.org/3/tv/${id}/season/2/credits?language=en-US`
+          `https://api.themoviedb.org/3/tv/${id}/season/1/credits?language=en-US`
         );
        
         console.log(data)
         res.json({ success: true, credits: data});
       } catch (err) {
-        console.log('facing error')
+        console.log('facing error:', err)
         res.status(500).json({ success: false, message: "Internal Server Error" });
       }
     }

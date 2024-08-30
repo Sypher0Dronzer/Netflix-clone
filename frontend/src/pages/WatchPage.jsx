@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useContentStore } from "../store/content";
+// import { useContentStore } from "../store/content";
 import axios from "axios";
 import Navbar from "./components/Navbar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -10,14 +10,14 @@ import { formatReleaseDate } from "../utils/dateFunction";
 import WatchPageSkeleton from "./components/skeletons/WatchPageSkeleton";
 
 const WatchPage = () => {
-  const { id } = useParams();
+  const { id, type } = useParams();
   const [trailers, setTrailers] = useState([]);
   const [currentTrailerIdx, setCurrentTrailerIdx] = useState(0);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
   const [credit, setCredit] = useState([]);
   const [similarContent, setSimilarContent] = useState({});
-  const { contentType } = useContentStore();
+  // const { type } = useContentStore();
 
   const sliderRef = useRef(null);
   const sliderRef2 = useRef(null);
@@ -26,7 +26,7 @@ const WatchPage = () => {
   useEffect(() => {
     const getTrailers = async () => {
       try {
-        const res = await axios.get(`/api/v1/${contentType}/${id}/trailers`);
+        const res = await axios.get(`/api/v1/${type}/${id}/trailers`);
         setTrailers(res.data.trailers);
       } catch (error) {
         if (error.message.includes("404")) {
@@ -36,13 +36,13 @@ const WatchPage = () => {
     };
 
     getTrailers();
-  }, [contentType, id]);
+  }, [type, id]);
 
   // Get Similar Content
   useEffect(() => {
     const getSimilarContent = async () => {
       try {
-        const res = await axios.get(`/api/v1/${contentType}/${id}/similar`);
+        const res = await axios.get(`/api/v1/${type}/${id}/similar`);
         setSimilarContent(res.data.similar);
       } catch (error) {
         if (error.message.includes("404")) {
@@ -52,13 +52,13 @@ const WatchPage = () => {
     };
 
     getSimilarContent();
-  }, [contentType, id]);
+  }, [type, id]);
 
   //  Get the content details
   useEffect(() => {
     const getContentDetails = async () => {
       try {
-        const res = await axios.get(`/api/v1/${contentType}/${id}/details`);
+        const res = await axios.get(`/api/v1/${type}/${id}/details`);
         setContent(res.data.content);
       } catch (error) {
         if (error.message.includes("404")) {
@@ -70,13 +70,13 @@ const WatchPage = () => {
     };
 
     getContentDetails();
-  }, [contentType, id]);
+  }, [type, id]);
 
   useEffect(() => {
     const getCreditData = async () => {
       try {
-        const res = await axios.get(`/api/v1/${contentType}/${id}/credits`);
-        const data= contentType === "movie"? res.data.credits.cast : res.data.credits.cast
+        const res = await axios.get(`/api/v1/${type}/${id}/credits`);
+        const data = res.data.credits.cast;
         console.log(data);
         setCredit(data);
       } catch (error) {
@@ -85,7 +85,7 @@ const WatchPage = () => {
     };
 
     getCreditData();
-  }, [contentType, id]);
+  }, [type, id]);
 
   const handleNext = () => {
     if (currentTrailerIdx < trailers.length - 1)
@@ -182,13 +182,13 @@ const WatchPage = () => {
           </div>
         )}
 
-        <div className="aspect-video mb-8 p-2 sm:px-10 md:px-32">
+        <div className="aspect-video mb-8 p-2 sm:px-6 md:px-20 ">
           {trailers.length > 0 && (
             <ReactPlayer
               controls={true}
               width={"100%"}
-              height={"70vh"}
-              className="mx-auto overflow-hidden rounded-lg"
+              height={"85%"}
+              className="mx-auto overflow-hidden rounded-lg "
               url={`https://www.youtube.com/watch?v=${trailers[currentTrailerIdx].key}`}
             />
           )}
@@ -226,8 +226,6 @@ const WatchPage = () => {
               )}{" "}
             </p>
             <p className="mt-4 text-lg">{content?.overview}</p>
-
-            
           </div>
           <img
             src={ORIGINAL_IMG_BASE_URL + content?.poster_path}
@@ -237,47 +235,49 @@ const WatchPage = () => {
         </div>
 
         {/*Credits*/}
-            <div className="mt-4 mx-auto relative max-w-5xl text-white">
-              <h3 className="text-2xl font-bold mb-4">Casts</h3>
-              <div className="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 group"
-              ref={sliderRef2}>
-                {credit.map((cast) => {
-                  return (
-                    <div
-                      key={cast.id}
-                      className=" flex-none w-52 "
-                    >
-                      <div className="w-52 h-64 overflow-hidden rounded-md ">
-
+        <div className="mt-4 mx-auto relative max-w-5xl text-white">
+          <h3 className="text-2xl font-bold mb-4">Casts</h3>
+          <div
+            className="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 group"
+            ref={sliderRef2}
+          >
+            {credit.map((cast) => {
+              return (
+                <Link key={cast.id} to={`/cast/${cast.id}`}>
+                  <div className=" flex-none w-52 ">
+                    <div className="w-52 h-64 overflow-hidden rounded-md ">
                       <img
                         src={ORIGINAL_IMG_BASE_URL + cast.profile_path}
                         alt=""
                       />
-                      </div>
-
-                      <h1 className="mt-2 font-bold">{cast.name}</h1>
-                      <p className="mt-1 text-white/80">(as {cast.character})</p>
                     </div>
-                  );
-                })}
-                <ChevronRight
-                className="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8
+
+                    <h1 className="mt-2 font-bold">{cast.name}</h1>
+                    <p className="mt-1 text-white/80">(as {cast.character})</p>
+                  </div>
+                </Link>
+              );
+            })}
+            <ChevronRight
+              className="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8
 										opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer
 										 bg-red-600 text-white rounded-full"
-                onClick={scrollRight2}
-              />
-              <ChevronLeft
-                className="absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 opacity-0 
+              onClick={scrollRight2}
+            />
+            <ChevronLeft
+              className="absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 opacity-0 
 								group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600 
 								text-white rounded-full"
-                onClick={scrollLeft2}
-              />
-              </div>
-            </div>
+              onClick={scrollLeft2}
+            />
+          </div>
+        </div>
 
         {similarContent.length > 0 && (
           <div className="mt-12 max-w-5xl mx-auto relative">
-            <h3 className="text-3xl font-bold mb-4">Similar Movies/Tv Show</h3>
+            <h3 className="text-3xl font-bold mb-4">
+              Similar Movies / Tv Show
+            </h3>
 
             <div
               className="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 group"
@@ -288,7 +288,7 @@ const WatchPage = () => {
                 return (
                   <Link
                     key={content.id}
-                    to={`/watch/${content.id}`}
+                    to={`/watch/${type}/${content.id}`}
                     className="w-52 flex-none"
                   >
                     <img
