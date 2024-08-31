@@ -172,7 +172,7 @@ const WatchPage = () => {
       <meta property="og:title" content={content?.title || content?.name} />
       <meta property="og:description" content={`Get details about ${content?.name || content?.title}. Visit us for more!`} />
       <meta property="og:image" content={SMALL_IMG_BASE_URL + content?.backdrop_path} />
-      <meta property="og:url" content={`https://example.com/watch/${type}/${id}`} />
+      <meta property="og:url" content={`https://netflix-clone-7ldf.onrender.com/watch/${type}/${id}`} />
       <meta property="og:type" content="website" />
     </Helmet>
   

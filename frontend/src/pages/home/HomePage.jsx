@@ -10,8 +10,9 @@ const HomePage = () => {
     <Helmet>
       <title>Netflix Clone</title>
       <meta property="og:title" content='Netflix Clone' />
-      <meta property="og:description" content="Discover top movies, TV shows, and cast details in our Netflix clone." />
-      <meta property="og:url" content={`https://example.com/`} />
+      <meta property="og:description" content="Discover top movies, TV shows, and cast details in our Netflix clone." />      
+      <meta property="og:image" content="https://ibb.co/h1nz882"/>
+      <meta property="og:url" content={`https://netflix-clone-7ldf.onrender.com/`} />
       <meta property="og:type" content="website" />
     </Helmet>
     <div >

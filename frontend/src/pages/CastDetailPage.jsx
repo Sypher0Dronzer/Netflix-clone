@@ -98,7 +98,7 @@ const CastDetailPage = () => {
       <meta property="og:title" content={details?.name} />
       <meta property="og:description" content={`Know more about ${details?.name }. Visit us for more!`} />
       <meta property="og:image" content={SMALL_IMG_BASE_URL + details?.profile_path} />
-      <meta property="og:url" content={`https://example.com/cast/${id}`} />
+      <meta property="og:url" content={`https://netflix-clone-7ldf.onrender.com/cast/${id}`} />
       <meta property="og:type" content="website" />
     </Helmet>
     <div className="bg-black  min-h-screen text-white">
