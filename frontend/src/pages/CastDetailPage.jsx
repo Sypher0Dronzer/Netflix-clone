@@ -5,6 +5,7 @@ import axios from "axios";
 import { SMALL_IMG_BASE_URL } from "../utils/constants";
 import { formatDateOfBirth } from "../utils/dateFunction";
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
+import { Helmet } from "react-helmet";
 
 const CastDetailPage = () => {
   const [details, setDetails] = useState("null");
@@ -91,7 +92,15 @@ const CastDetailPage = () => {
     );
   }
 
-  return (
+  return (<>
+  <Helmet>
+      <title>{details?.name}</title>
+      <meta property="og:title" content={details?.name} />
+      <meta property="og:description" content={`Know more about ${details?.name }. Visit us for more!`} />
+      <meta property="og:image" content={SMALL_IMG_BASE_URL + details?.profile_path} />
+      <meta property="og:url" content={`https://example.com/cast/${id}`} />
+      <meta property="og:type" content="website" />
+    </Helmet>
     <div className="bg-black  min-h-screen text-white">
         <Navbar />
       <div className="mx-auto max-w-6xl px-4  h-full">
@@ -242,6 +251,7 @@ const CastDetailPage = () => {
         </div>
       </div>
     </div>
+  </>
   );
 };
 

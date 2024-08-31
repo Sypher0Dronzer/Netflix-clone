@@ -11,7 +11,6 @@ export async function getCastDetails(req, res) {
 
         const tvCasted=await fetchFromTMDB(`https://api.themoviedb.org/3/person/${id}/tv_credits?language=en-US`)
 
-        console.log(moviesCasted)
         
         res.json({ success: true, castDetails: castDetails, movies:moviesCasted,tvs:tvCasted});
       } catch (err) {

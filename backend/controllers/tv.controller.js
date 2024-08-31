@@ -84,10 +84,10 @@ async function getTvsByCategory(req, res) {
           `https://api.themoviedb.org/3/tv/${id}/season/1/credits?language=en-US`
         );
        
-        console.log(data)
+        // console.log(data)
         res.json({ success: true, credits: data});
       } catch (err) {
-        console.log('facing error:', err)
+        // console.log('facing error:', err)
         res.status(500).json({ success: false, message: "Internal Server Error" });
       }
     }

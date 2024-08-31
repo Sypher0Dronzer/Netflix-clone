@@ -9,7 +9,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const { signup } = useAuthStore();
+  const { signup, isSigningUp } = useAuthStore();
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -84,9 +84,9 @@ const SignUpPage = () => {
             <button
               className="w-full py-2 bg-red-600 text-white font-semibold rounded-md
 							hover:bg-red-700
-						"
+						" disabled={isSigningUp}
             >
-              Sign Up
+              {isSigningUp? "Signing up ...":"Sign Up"}
             </button>
           </form>
           <div className="text-center text-gray-400">

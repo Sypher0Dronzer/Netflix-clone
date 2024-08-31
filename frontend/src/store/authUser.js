@@ -40,7 +40,7 @@ export const useAuthStore = create((set) => ({
       set({ user: null, isLoggingOut: false });
       toast.success("Logged out successfully");
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
       toast.error(err.response.data.message || "Logout failed");
       set({ isLoggingOut: false });
     }
@@ -53,7 +53,7 @@ export const useAuthStore = create((set) => ({
 
       set({ user: response.data.user, isCheckingAuth: false });
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
 
       set({ isCheckingAuth: false, user: null });
     }

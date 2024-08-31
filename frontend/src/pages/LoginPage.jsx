@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authUser";
+import { Helmet } from "react-helmet";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {login}= useAuthStore()
+  const {login,isLoggingIn}= useAuthStore()
 
   const handleSignUp = (e) => {
     e.preventDefault();
     login({email, password});
   };
-    return (
+    return (<>
+    <Helmet>
+      <title>Login Page</title>      
+    </Helmet>
         <div className="h-screen w-full hero-bg">
           <header className="max-w-6xl  mx-auto flex items-center justify-center p-[2vw]">
             <Link to={"/"}>
@@ -64,8 +68,9 @@ const LoginPage = () => {
                   className="w-full py-2 bg-red-600 text-white font-semibold rounded-md
                                 hover:bg-red-700
                             "
+                            disabled={isLoggingIn}
                 >
-                  Login
+                  {isLoggingIn? "Vefifying Credentials ...":"Login"}
                 </button>
               </form>
               <div className="text-center text-gray-400">
@@ -77,6 +82,7 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
+    </>
       );
 }
 

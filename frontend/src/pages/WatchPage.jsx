@@ -9,6 +9,9 @@ import { ORIGINAL_IMG_BASE_URL, SMALL_IMG_BASE_URL } from "../utils/constants";
 import { formatReleaseDate } from "../utils/dateFunction";
 import WatchPageSkeleton from "./components/skeletons/WatchPageSkeleton";
 
+//for seo
+import { Helmet } from 'react-helmet';
+
 const WatchPage = () => {
   const { id, type } = useParams();
   const [trailers, setTrailers] = useState([]);
@@ -163,7 +166,16 @@ const WatchPage = () => {
     );
   }
 
-  return (
+  return (<>
+  <Helmet>
+      <title>{content?.title || content?.name}</title>
+      <meta property="og:title" content={content?.title || content?.name} />
+      <meta property="og:description" content={`Get details about ${content?.name || content?.title}. Visit us for more!`} />
+      <meta property="og:image" content={SMALL_IMG_BASE_URL + content?.backdrop_path} />
+      <meta property="og:url" content={`https://example.com/watch/${type}/${id}`} />
+      <meta property="og:type" content="website" />
+    </Helmet>
+  
     <div className="bg-black min-h-screen text-white">
         <Navbar />
       <div className="mx-auto max-w-6xl px-4 pb-8 h-full">
@@ -342,6 +354,7 @@ const WatchPage = () => {
         )}
       </div>
     </div>
+  </>
   );
 };
 export default WatchPage;

@@ -119,7 +119,7 @@ export async function login(req, res, next) {
 */
 export async function logout(req, res) {
   try {
-    console.log(req.user);
+    // console.log(req.user);
 
     req.logout((err) => {
       if (err)
@@ -132,7 +132,7 @@ export async function logout(req, res) {
           .json({ success: true, message: "Logged out successfully" });
     });
   } catch (error) {
-    console.log("Error in logout controller", error.message);
+    // console.log("Error in logout controller", error.message);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 }
@@ -142,7 +142,7 @@ export async function authCheck(req, res) {
     
     return res.status(200).json({ success: true, user: req.user });
   } catch (err) {
-    console.log("Error in authCheck controller", err.message);
+    // console.log("Error in authCheck controller", err.message);
     return res.status(500).json({ success: false, message: "Internal server error." });
   }
 }
