@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { ORIGINAL_IMG_BASE_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const SearchPage = () => {
 	const [activeTab, setActiveTab] = useState("movie");
@@ -34,7 +35,16 @@ const SearchPage = () => {
 		}
 	};
 
-	return (
+	return (<>
+	
+	<Helmet>
+      <title>Search</title>
+      <meta property="og:title" content='Search' />
+      <meta property="og:description" content="Search for  movies, TV shows, and cast details in our Netflix clone." />      
+      <meta property="og:image" content="https://ibb.co/r0Z8q6c"/>
+      <meta property="og:url" content={`https://netflix-clone-7ldf.onrender.com/search`} />
+      <meta property="og:type" content="website" />
+    </Helmet>
 		<div className='bg-black min-h-screen text-white'>
 			<Navbar />
 			<div className='container mx-auto px-4 py-8'>
@@ -114,6 +124,7 @@ const SearchPage = () => {
 				</div>
 			</div>
 		</div>
+	</>
 	);
 };
 export default SearchPage;
