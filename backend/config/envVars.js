@@ -9,5 +9,7 @@ export const ENV_VARS = {
 	PORT: process.env.PORT || 5000,
 	TMDB_API_KEY: process.env.TMDB_API_KEY,
 	SESSION_SECRET:process.env.SESSION_SECRET,
-	TMDB_API_KEY:process.env.TMDB_API_KEY
+	TMDB_API_KEY:process.env.TMDB_API_KEY,
+	NODE_ENV: process.env.NODE_ENV,
+
 };

@@ -326,13 +326,13 @@ const WatchPage = () => {
               })}
 
               <ChevronRight
-                className="hidden sm:block absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8
+                className="hidden sm:block absolute top-48 right-2 w-9 h-9
 										opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer
 										 bg-red-600 text-white rounded-full"
                 onClick={scrollRight}
               />
               <ChevronLeft
-                className="hidden sm:block absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 opacity-0 
+                className="hidden sm:block absolute top-48 left-2 w-9 h-9 opacity-0 
 								group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600 
 								text-white rounded-full"
                 onClick={scrollLeft}

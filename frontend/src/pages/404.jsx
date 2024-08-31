@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 
 const NotFoundPage = () => {
 	return (
-		<div
-			className='min-h-screen px-2 bg-cover bg-center flex flex-col justify-center items-center text-white'
-			style={{ backgroundImage: `url('/404.png')` }}
-		>
-			<header className='absolute top-0 left-0 p-4 bg-black w-full '>
+		<>
+		
+			<header className=' p-4 bg-black w-full '>
 				<Link to={"/"}>
 					<img src='/netflix-logo.png' alt='Netflix' className='h-8' />
 				</Link>
 			</header>
+		<div
+			className='min-h-screen px-2 bg-cover bg-center flex flex-col justify-center items-center text-white'
+			style={{ backgroundImage: `url('/404.png')` }}
+		>
 			<main className='text-center error-page--content z-10'>
 				<h1 className='md:text-7xl text-4xl sm:text-6xl font-semibold mb-4'>Lost your way?</h1>
 				<p className='mb-6 sm:text-xl text-lg'>
@@ -21,6 +23,7 @@ const NotFoundPage = () => {
 				</Link>
 			</main>
 		</div>
+		</>
 	);
 };
 export default NotFoundPage;
